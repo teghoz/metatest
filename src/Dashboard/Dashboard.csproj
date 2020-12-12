@@ -11,6 +11,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="WorkflowCore" Version="3.1.6" />
+    <PackageReference Include="WorkflowCore.DSL" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hangfire.Lib\Hangfire.Lib.csproj" />
+    <ProjectReference Include="..\Workflow.Lib\Workflow.Lib.csproj" />
+    <ProjectReference Include="..\Workflow.Client\Workflow.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

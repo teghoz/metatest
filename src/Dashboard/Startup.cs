@@ -1,11 +1,14 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Hangfire;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Dashboard
 {
@@ -28,11 +31,35 @@ namespace Dashboard
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Meta API",
+                    Description = "Meta API",
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ringier Meta API");
+                c.RoutePrefix = string.Empty;
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,6 +76,12 @@ namespace Dashboard
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                //Authorization = new[] { new CashboxHangfireAuthorizationFilter() },
+                DashboardTitle = $@"Ringier Meta Job Manager - {env.EnvironmentName}"
+            });
 
             app.UseEndpoints(endpoints =>
             {
