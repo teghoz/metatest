@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Hangfire.Enqueuers
 {
     public interface IEnqueuedJob<T>
     {
-        string EnqueueJob(T jobParams);
+        Task<string> EnqueueJob(T jobParams);
     }
 }

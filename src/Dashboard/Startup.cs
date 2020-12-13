@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Workflow.Extensions;
+using Hangfire.Extensions;
 
 namespace Dashboard
 {
@@ -71,17 +73,21 @@ namespace Dashboard
                 app.UseHsts();
             }
 
+            //app.AddWorkflowHost();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
 
-            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            var options = new DashboardOptions
             {
-                //Authorization = new[] { new CashboxHangfireAuthorizationFilter() },
+                Authorization = new[] { new DashboardNoAuthorizationFilter() },
                 DashboardTitle = $@"Ringier Meta Job Manager - {env.EnvironmentName}"
-            });
+            };
+
+            app.AddHangfireDashboard(options);
 
             app.UseEndpoints(endpoints =>
             {

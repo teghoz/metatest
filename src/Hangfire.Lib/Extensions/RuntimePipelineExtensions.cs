@@ -13,12 +13,8 @@ namespace Hangfire.Extensions
 {
     public static class RuntimePipelineExtensions
     {
-        public static IApplicationBuilder AddHangfireDashboard(this IApplicationBuilder app)
-        {
-            var options = new DashboardOptions
-            {
-                Authorization = new[] { new DashboardNoAuthorizationFilter() },
-            };
+        public static IApplicationBuilder AddHangfireDashboard(this IApplicationBuilder app, DashboardOptions options)
+        {           
             app.UseHangfireDashboard("/hangfire", options);
 
             return app;
