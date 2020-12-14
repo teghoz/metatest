@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ApplicationState } from '../store';
 import * as WorkflowStore from '../store/Workflows';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faPause, faStop, faEye } from '@fortawesome/free-solid-svg-icons'
 
 // At runtime, Redux will merge together...
 type WorkflowProps =
@@ -34,23 +36,52 @@ class Workflows extends React.PureComponent<WorkflowProps> {
     this.props.requestWorkflows();
   }
 
+  private _handleDetailButtonClick = () => {
+
+    this.context.router.push({ //browserHistory.push should also work here
+      pathname: './WorkflowDetail',
+      //state: {yourCalculatedData: data}
+    });
+} 
+
   private renderWorkflowTable() {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
+            <th>Definition</th>
             <th>Workflow Id</th>
             <th>Version</th>
-            <th>Description</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {console.log("ll: ", this.props)}
           {this.props.workflows.map((workflow: WorkflowStore.Workflow) =>
             <tr key={workflow.id}>
+              <td>{workflow.workflowDefinitionId}</td>
               <td>{workflow.id}</td>
               <td>{workflow.version}</td>
-              <td>{workflow.description}</td>
+              <td>
+                <button 
+                  className="btn btn-primary"
+                  onClick={this._handleDetailButtonClick}>
+                  <FontAwesomeIcon icon={faEye} /> Details
+                </button> &nbsp;
+                <button 
+                  className="btn btn-success"
+                  onClick={() => { this.props.resume(workflow.id); }}>                  
+                  <FontAwesomeIcon icon={faPlay} /> Resume
+                </button> &nbsp;
+                <button 
+                  className="btn btn-warning"
+                  onClick={() => { this.props.suspend(workflow.id); }}>                 
+                  <FontAwesomeIcon icon={faPause} /> Suspend
+                </button> &nbsp;
+                <button className="btn btn-danger"
+                  onClick={() => { this.props.stop(workflow.id); }}>
+                  <FontAwesomeIcon icon={faStop} /> Stop
+                </button>
+              </td>
             </tr>
           )}
         </tbody>
