@@ -13,9 +13,9 @@ namespace Hangfire.Lib.Enqueuers
         {
             _workflowJob = workflowJob;
         }
-        public Task<string> EnqueueJob(WorkflowParams jobParams)
+        public string EnqueueJob(WorkflowParams jobParams)
         {
-            return _workflowJob.Start(jobParams.WorkflowId, jobParams.Version, jobParams.Reference, jobParams.Data);
+            return BackgroundJob.Enqueue(() => _workflowJob.Start(jobParams.WorkflowId, jobParams.Version, jobParams.Reference, jobParams.Data));
         }
     }
 }

@@ -4,6 +4,9 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import Counter from './components/Counter';
 import Workflows from './components/Workflows';
+import NewWorkflow from './components/NewWorkflow';
+import WorkflowDetail from './components/WorkflowDetail';
+//import Workflows from './components/Workflows';
 import FetchData from './components/FetchData';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -16,7 +19,9 @@ export default () => (
     <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
-        <Route path='/workflow' component={Workflows} />
+        <Route path='/workflows' component={Workflows} />
+        <Route path='/NewWorkflow' component={NewWorkflow} />
+        <Route path='/workflowDetail/:workflowId' component={WorkflowDetail} />
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
     </Layout>
 );
