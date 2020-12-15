@@ -80,7 +80,7 @@ StopWorkflowAction;
 
 export const actionCreators = {
     startWorkflow: (workflow: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        handleData(`api/workflows`, 'POST', {
+        handleData(`api/workflows/StartWorkflow`, 'POST', {
             "WorkflowId": workflow
         })
         .then(data => {
@@ -91,7 +91,7 @@ export const actionCreators = {
         // Only load data if it's something we don't already have (and are not already loading)
         const appState = getState();
         if (appState && appState.workflowState) {
-            fetch(`api/workflows`)
+            fetch(`api/workflows/getworkflows`)
                 .then(response => response.json())
                 .then(data => {
                     dispatch({ type: 'RECEIVE_WORKFLOWS', workflows: data.data.data as Workflow[]});
@@ -115,7 +115,7 @@ export const actionCreators = {
     requestWorkflow: (workflowId: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         const appState = getState();
         if (appState && appState.workflowState) {
-            fetch(`api/workflows/workflow/${workflowId}`)
+            fetch(`api/workflows/getworkflow/${workflowId}`)
                 .then(response => response.json())
                 .then(data => {
                     dispatch({ type: 'RECEIVE_WORKFLOW', workflow: data.data as Workflow});
@@ -125,19 +125,19 @@ export const actionCreators = {
         }   
     },
     resume: (workflowId: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        handleData(`api/workflows/${workflowId}/actions`, 'POST', {})
+        handleData(`api/workflows/${workflowId}/resume`, 'POST', {})
         .then(data => {
             console.log(data); // JSON data parsed by `data.json()` call
         });
     },
     suspend: (workflowId: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        handleData(`api/workflows/${workflowId}/actions`, 'PATCH', {})
+        handleData(`api/workflows/${workflowId}/suspend`, 'POST', {})
         .then(data => {
             console.log(data); // JSON data parsed by `data.json()` call
         });
     },
     stop: (workflowId: string): AppThunkAction<KnownAction> => (dispatch, getState) => {    
-        handleData(`api/workflows/${workflowId}/actions`, 'DELETE', {})
+        handleData(`api/workflows/${workflowId}/stop`, 'POST', {})
         .then(data => {
             console.log(data); // JSON data parsed by `data.json()` call
         });

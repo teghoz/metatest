@@ -29,7 +29,7 @@ class NewWorkflow extends React.PureComponent<WorkflowProps, {Workflow: string, 
   }
 
   handleSubmit(event: any) {
-    handleData(`api/workflows`, 'POST', {
+    handleData(`api/workflows/StartWorkflow`, 'POST', {
       WorkflowId: this.state.Workflow,    
     })
     .then(data => {

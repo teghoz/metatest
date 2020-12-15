@@ -17,7 +17,7 @@ import './custom.css'
 
 export default () => (
     <Layout>
-        <Route exact path='/' component={Home} />
+        <Route path='/home' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/workflows' component={Workflows} />
         <Route path='/NewWorkflow' component={NewWorkflow} />

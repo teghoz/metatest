@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Workflow.Extensions;
 using Hangfire.Extensions;
+using System.Reflection;
+using System.IO;
 
 namespace Dashboard
 {
@@ -47,6 +49,10 @@ namespace Dashboard
                         Url = new Uri("https://example.com/license"),
                     }
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
         }

@@ -22,7 +22,11 @@ namespace Dashboard.Controllers
             _workflowClient = workFlowClient;
             _enqueuedJob = enqueuedJob;
         }
-        [HttpGet("Constants")]
+        /// <summary>
+        /// Get workflow constants
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Constants")]    
         public ActionResult GetWorkflowConstants()
         {
             return Ok(new
@@ -30,7 +34,13 @@ namespace Dashboard.Controllers
                 data = _workflowClient.GetWorkflowNames()
             });
         }
-        [HttpGet]
+
+        /// <summary>
+        /// Get Workflow list
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        [HttpGet("GetWorkflows")]
         public async Task<ActionResult> Get(string keyword)
         {
             return Ok(new
@@ -39,7 +49,12 @@ namespace Dashboard.Controllers
             });
         }
 
-        [HttpGet("Workflow/{workflowId}")]
+        /// <summary>
+        /// Get a particular workflow
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <returns></returns>
+        [HttpGet("GetWorkflow/{workflowId}")]
         public async Task<ActionResult> GetWorkflowById(string workflowId)
         {
             return Ok(new
@@ -48,7 +63,12 @@ namespace Dashboard.Controllers
             });
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Start a particular workflow
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost("StartWorkflow")]
         public ActionResult StartWorkFlow([FromBody] WorkflowPayload data)
         {
             var workflowParams = new WorkflowParams
@@ -65,17 +85,28 @@ namespace Dashboard.Controllers
             });
         }
 
-        [HttpPost("{workflowId}/Actions")]
-        public async Task<ActionResult> ResumeWorkFlow(string workflowId)
+        /// <summary>
+        /// Resumes a particular Workflow
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <returns></returns>
+        [HttpPost("{workflowId}/Resume")]
+        public async Task<ActionResult> ResumeWorkFlow([FromRoute] string workflowId)
         {
-            return Ok(new
-            {
-                data = await _workflowClient.Resume(workflowId)
-            });
+            return Ok(new { data = workflowId});
+            // return Ok(new
+            // {
+            //     data = await _workflowClient.Resume(workflowId)
+            // });
         }
 
-        [HttpPatch("{workflowId}/Actions")]
-        public async Task<ActionResult> SuspendWorkFlow(string workflowId)
+        /// <summary>
+        /// Suspends a particular Workflow
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <returns></returns>
+        [HttpPost("{workflowId}/Suspend")]
+        public async Task<ActionResult> SuspendWorkFlow([FromRoute] string workflowId)
         {
             return Ok(new
             {
@@ -83,8 +114,13 @@ namespace Dashboard.Controllers
             });
         }
 
-        [HttpDelete("{workflowId}/Actions")]
-        public async Task<ActionResult> StopWorkFlow(string workflowId)
+        /// <summary>
+        /// Terminates a particular workflow
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <returns></returns>
+        [HttpPost("{workflowId}/Stop")]
+        public async Task<ActionResult> StopWorkFlow([FromRoute] string workflowId)
         {
             return Ok(new
             {
