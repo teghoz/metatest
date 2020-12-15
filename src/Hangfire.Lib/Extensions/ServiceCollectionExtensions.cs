@@ -11,6 +11,9 @@ using Hangfire.Options;
 using Hangfire.Redis;
 using StackExchange.Redis;
 using Utilities;
+using Hangfire.Lib.Jobs;
+using Hangfire.Lib.Enqueuers;
+using Hangfire.Models;
 
 namespace Hangfire.Extensions
 {
@@ -100,7 +103,7 @@ namespace Hangfire.Extensions
         {
             // Enqueuers
             // TODO: Implement a Enqueuer that starts a Workflow job
-            // services.TryAddTransient<EnqueueWorkflowJob>();
+            services.TryAddTransient<IEnqueuedJob<WorkflowParams>, EnqueuedJob>();
 
             return services;
         }
@@ -109,7 +112,7 @@ namespace Hangfire.Extensions
         {
             // Jobs
             // TODO: Implement Workflow Job
-            // services.TryAddTransient<IWorkflowJob, WorkflowJob>();
+            services.TryAddTransient<IWorkflowJob, WorkflowJob>();
 
             return services;
         }
