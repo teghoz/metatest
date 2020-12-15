@@ -14,11 +14,11 @@ type WorkflowProps =
   & typeof WorkflowStore.actionCreators;
 
 
-class NewWorkflow extends React.PureComponent<WorkflowProps, {Workflow: string, IsSaved: boolean, Data: any}> {
+class NewWorkflow extends React.PureComponent<WorkflowProps, {Workflow: string, IsSaved: boolean, Data: string}> {
 
   constructor(props: any) {
     super(props);
-    this.state = { Workflow: '', IsSaved: false, Data: {}};
+    this.state = { Workflow: '', IsSaved: false, Data: ''};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,6 +35,7 @@ class NewWorkflow extends React.PureComponent<WorkflowProps, {Workflow: string, 
     .then(data => {
         console.log(data.data);
         this.setState({Data: data.data, IsSaved: true});
+        console.log("this data",this.state.Data);
     });
     event.preventDefault();
   }
@@ -70,7 +71,7 @@ class NewWorkflow extends React.PureComponent<WorkflowProps, {Workflow: string, 
             <p>Aww yeah, Your job has been posted </p>
             <hr/>
             <p className="mb-0">
-              <Link className='btn btn-outline-primary' target="_blank" to={`/hangfire/${this.state.Data.result}/`}>
+              <Link className='btn btn-outline-primary' target="_blank" to={`/hangfire/jobs/details/${this.state.Data}/`}>
                 <FontAwesomeIcon icon={faCogs} />  See on Hangfire
               </Link>
             </p>
